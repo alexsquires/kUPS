@@ -198,6 +198,10 @@ def _structure_factor_grid(
     return sf.reshape(-1, 2)[offset + position]
 
 
+_NATIVE_SUM_ROWS_PER_SYSTEM = 16
+"""Rows per system up to which GPU sums accumulate in the response dtype."""
+
+
 def _structure_factor_full(
     positions: Array,
     charges: Array,
@@ -216,7 +220,9 @@ def _structure_factor_full(
     Signed charges allow the same reduction to evaluate incremental deltas.
     ``grid_index`` locates the k-vectors inside the phase grid, shaped
     ``(n_systems, n_kvecs)``, and is required there; NumPy indices let the grid
-    be cropped to the rows the k-vectors occupy.
+    be cropped to the rows the k-vectors occupy. GPU sums of at most
+    ``_NATIVE_SUM_ROWS_PER_SYSTEM`` rows per system on average accumulate in
+    the response dtype.
     """
     if particle_chunk_size < 1 or k_chunk_size < 1:
         raise ValueError("Reciprocal chunk sizes must be positive")
@@ -242,9 +248,13 @@ def _structure_factor_full(
             k_chunk_size,
         ).astype(dtype)
     if not tiled and jax.default_backend() in {"gpu", "cuda", "rocm"}:
-        return batch_mask.sum_over(
-            _frequency_response(positions, charges, kvecs, batch_mask)
-        ).data
+        response = _frequency_response(positions, charges, kvecs, batch_mask)
+        if n <= _NATIVE_SUM_ROWS_PER_SYSTEM * ns:
+            # Wider scatters are slow on GPUs; few rows per system round little.
+            return jax.ops.segment_sum(
+                response, batch_mask.raw_indices, ns, mode="drop"
+            )
+        return batch_mask.sum_over(response).data
     return _structure_factor_tiled(
         positions,
         charges,
