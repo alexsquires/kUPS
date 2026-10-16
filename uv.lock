@@ -2134,7 +2134,7 @@ wheels = [
 
 [[package]]
 name = "kups"
-version = "1.0.7"
+version = "1.0.8"
 source = { editable = "." }
 dependencies = [
     { name = "ase" },
@@ -2152,7 +2152,6 @@ dependencies = [
     { name = "packaging" },
     { name = "pint" },
     { name = "rich" },
-    { name = "slub" },
     { name = "tqdm" },
 ]
 
@@ -2222,7 +2221,6 @@ requires-dist = [
     { name = "packaging", specifier = ">=24.2" },
     { name = "pint", specifier = ">=0.24.4" },
     { name = "rich", specifier = ">=13.0" },
-    { name = "slub", specifier = ">=0.1.1" },
     { name = "tqdm", specifier = ">=4.67.1" },
 ]
 provides-extras = ["cuda", "hf", "uma", "mace"]
@@ -4810,18 +4808,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz", hash = "sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81", size = 34031, upload-time = "2024-12-04T17:35:28.174Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl", hash = "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274", size = 11050, upload-time = "2024-12-04T17:35:26.475Z" },
-]
-
-[[package]]
-name = "slub"
-version = "0.1.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "jax" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/32/89/93ff76f3bba67c254c28071111c801f306365b08b3e6cc4edd82a5d755fc/slub-0.1.1.tar.gz", hash = "sha256:f5d07c8d1b9f53ae208dfa5c3840ab4d65f2f9e21ea532641794b10c8496729c", size = 83553, upload-time = "2026-04-16T17:02:17.914Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/93/81/3bc58931a04b0e809c1f4632965bac7877c2200c4621a51ab8bf907f982d/slub-0.1.1-py3-none-any.whl", hash = "sha256:547c314f10f74a3aefd68fd491f84d5511182bee2f61ba9821e1267009654fac", size = 16532, upload-time = "2026-04-16T17:02:39.926Z" },
 ]
 
 [[package]]
